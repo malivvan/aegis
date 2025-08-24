@@ -37,5 +37,6 @@ go install github.com/malivvan/aegis@latest
 | `mgrd`          | [github.com/awnumar/memguard](https://github.com/awnumar/memguard/tree/3152cda6d138dca44a45a0d06aa445cb2630e487)                             | [Apache-2.0 license](mgrd/LICENSE)           |
 | `mgrd/memcall`  | [github.com/awnumar/memcall](https://github.com/awnumar/memcall/tree/ba2f6d61972029386765820a9bcbea79e4c1946a)                               | [Apache-2.0 license](mgrd/memcall/LICENSE)   |
 | `opgp`          | [github.com/ProtonMail/gopenpgp](https://github.com/ProtonMail/gopenpgp/tree/2f846090d52deae399934a47847e8ae051a5a297)                       | [MIT](opgp/LICENSE)                          |                        
+| `opgp/circl`    | [https://github.com/malivvan/aegis/opgp/circl](https://github.com/malivvan/aegis/opgp/circl/tree/c6d33e35234ebf5c4319d12ae7d77d7d17053e56)                     | [BSD 3-Clause license](opgp/circl/LICENSE)   |
 | `opgp/gomime`   | [github.com/ProtonMail/go-mime](https://github.com/ProtonMail/go-mime/tree/7d82a3887f2f309b99a465c2025e74b117c3fac6)                         | [MIT](opgp/mime/LICENSE)                     |        
 | `opgp/gocrypto` | [github.com/ProtonMail/go-crypto](https://github.com/ProtonMail/go-crypto/tree/3b22d8539b95b3b7e76a911053023e6ef9ef51d6)                     | [BSD-3-Clause license](opgp/xcrypto/LICENSE) |

@@ -3,7 +3,6 @@ module github.com/malivvan/aegis
 go 1.25.0
 
 require (
-	github.com/cloudflare/circl v1.6.1
 	github.com/google/go-cmp v0.7.0
 	github.com/malivvan/cui v0.1.2
 	github.com/stretchr/testify v1.11.0

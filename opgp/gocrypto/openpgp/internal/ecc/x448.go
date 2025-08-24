@@ -5,7 +5,7 @@ import (
 	"crypto/subtle"
 	"io"
 
-	x448lib "github.com/cloudflare/circl/dh/x448"
+	x448lib "github.com/malivvan/aegis/opgp/circl/dh/x448"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/errors"
 )
 

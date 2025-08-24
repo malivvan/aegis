@@ -6,7 +6,7 @@ import (
 	"crypto/subtle"
 	"io"
 
-	ed25519lib "github.com/cloudflare/circl/sign/ed25519"
+	ed25519lib "github.com/malivvan/aegis/opgp/circl/sign/ed25519"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/errors"
 )
 

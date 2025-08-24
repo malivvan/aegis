@@ -12,6 +12,7 @@ import (
 )
 
 func main() {
+
 	mgrd.CatchSignal(func(_ os.Signal) {
 		fmt.Println("\nExiting...")
 	}, os.Interrupt)
@@ -59,6 +60,7 @@ func main() {
 			},
 		},
 	}).Run(os.Args); err != nil {
-		log.Fatal(err)
+		println("error: " + err.Error())
+		mgrd.SafeExit(1)
 	}
 }
