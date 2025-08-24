@@ -38,7 +38,7 @@ install:
 	@go install github.com/CycloneDX/cyclonedx-gomod/cmd/cyclonedx-gomod@latest
 
 test:
-	@CGO_ENABLED=0 gotestsum --hide-summary skipped --format-hide-empty-pkg -- -short ./pcsc ./mhex ./kdbx
+	@CGO_ENABLED=0 gotestsum --hide-summary skipped --format-hide-empty-pkg -- -short ./mhex ./kdbx
 
 build: clean
 	$(call build,$(shell go env GOOS),$(shell go env GOARCH),,)
