@@ -31,7 +31,6 @@ endef
 
 install:
 	@go install gotest.tools/gotestsum@latest
-	@go install github.com/CycloneDX/cyclonedx-gomod/cmd/cyclonedx-gomod@latest
 
 test:
 	@CGO_ENABLED=0 gotestsum --format=$(TEST_FORMAT) --hide-summary skipped --format-hide-empty-pkg -- -short ./cli ./mhex ./kdbx ./mgrd/... ./opgp/...
