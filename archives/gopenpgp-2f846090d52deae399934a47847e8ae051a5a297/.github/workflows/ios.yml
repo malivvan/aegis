@@ -1,0 +1,42 @@
+name: Gomobile for iOS
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main, v3 ]
+
+jobs:
+  build:
+    name: Build library for iOS with gomobile
+    runs-on: macos-latest
+
+    steps:
+      - name: Set up xcode 15.3.0
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: 15.3.0
+        id: xcode
+
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v2
+        with:
+          go-version: ^1.16
+        id: go
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build
+        env:
+          platform: ${{ 'iOS Simulator' }}
+        run: |
+          ./build.sh apple
+          find dist
+
+      - name: Upload xcframework
+        uses: actions/upload-artifact@v4
+        with:
+          name: gopenpgp.xcframework
+          path: dist/apple/gopenpgp.xcframework
+          if-no-files-found: error

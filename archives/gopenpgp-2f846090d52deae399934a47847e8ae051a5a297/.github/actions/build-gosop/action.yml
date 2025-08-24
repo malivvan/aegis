@@ -1,0 +1,61 @@
+name: 'build-gosop'
+description: 'Build gosop from the current branch'
+
+inputs:
+  gopenpgp-ref: 
+    description: 'gopenpgp branch tag or commit to build from'
+    required: true
+    default: ''
+
+  binary-location: 
+    description: 'Path for the gosop binary'
+    required: true
+    default: './gosop-${{ github.sha }}'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout gopenpgp
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ inputs.gopenpgp-ref }}
+        path: gopenpgp
+    - name: Set env
+      run: echo "GOSOP_BRANCH_REF=$(./.github/test-suite/determine_gosop_branch.sh)" >> $GITHUB_ENV
+      shell: bash
+    - name: Print gosop branch
+      run: echo ${{ env.GOSOP_BRANCH_REF}}
+      shell: bash
+    # Build gosop
+    - name: Set up latest golang
+      uses: actions/setup-go@v3
+      with:
+        go-version: ^1.18
+    - name: Check out gosop
+      uses: actions/checkout@v4
+      with:
+        repository: ProtonMail/gosop
+        ref: ${{ env.GOSOP_BRANCH_REF}}
+        path: gosop
+    - name: Cache go modules
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cache/go-build
+          ~/go/pkg/mod
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-go-
+    - name: Build gosop
+      run: ./.github/test-suite/build_gosop.sh
+      shell: bash
+    # Test the binary
+    - name: Print gosop version
+      run: ./gosop/gosop version --extended
+      shell: bash
+    # Move and rename binary
+    - name: Move binary
+      run: mv gosop/gosop ${{ inputs.binary-location }}
+      shell: bash
+    
+    

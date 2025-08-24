@@ -12,16 +12,12 @@ define build
 	$(eval URL := $(shell if [ -z "$(VERSION)" ]; then echo -n "" ; else echo -n https://github.com/malivvan/aegis/releases/download/$(VERSION)/$(OUTPUT); fi))
 	$(eval SERIAL := $(shell if [ -z "$(VERSION)" ]; then uuidgen --random ; else uuidgen --sha1 --namespace @url --name $(URL); fi))
 	@echo "$(OUTPUT)"
-	@CGO_ENABLED=0 GOOS=$(1) GOARCH=$(2) GOFLAGS=-tags="$(4)" cyclonedx-gomod \
-      app -json -packages -licenses \
-      -serial=$(SERIAL) \
-      -output build/$(OUTPUT).json -main ./cmd > /dev/null 2>&1
 	@CGO_ENABLED=0 GOOS=$(1) GOARCH=$(2) go \
       build -trimpath -tags="$(4)" \
 	  -ldflags="$(3) \
 	  -buildid=$(SERIAL) \
 	  -X main.version=$(VERSION)" \
-	  -o build/$(OUTPUT) ./cmd
+	  -o build/$(OUTPUT) .
 	@if [ ! -f build/RELEASE.md ]; then \
 	  echo "| filename | serial |" > build/RELEASE.md; \
 	  echo "|----------|--------|" >> build/RELEASE.md; \
@@ -38,7 +34,7 @@ install:
 	@go install github.com/CycloneDX/cyclonedx-gomod/cmd/cyclonedx-gomod@latest
 
 test:
-	@CGO_ENABLED=0 gotestsum --hide-summary skipped --format-hide-empty-pkg -- -short ./mhex ./kdbx
+	@CGO_ENABLED=0 gotestsum --format=$(TEST_FORMAT) --hide-summary skipped --format-hide-empty-pkg -- -short ./cli ./mhex ./kdbx ./mgrd/... ./opgp/...
 
 build: clean
 	$(call build,$(shell go env GOOS),$(shell go env GOARCH),,)

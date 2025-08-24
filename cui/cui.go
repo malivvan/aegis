@@ -1,13 +1,15 @@
 package cui
 
-import "github.com/malivvan/cui"
+import (
+	"github.com/malivvan/cui"
+)
 
-func Execute(version, keyring string) error {
+func Execute(keyring string) error {
 	app := cui.NewApplication()
 
 	view := cui.NewFlex()
 	text1 := cui.NewTextView()
-	text1.SetText("aegis " + version)
+	text1.SetText("aegis ") // + bom.Metadata.Component.Version)
 	text1.SetTextAlign(cui.AlignLeft)
 	text2 := cui.NewTextView()
 	text2.SetText(keyring)
