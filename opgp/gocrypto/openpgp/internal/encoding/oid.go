@@ -7,6 +7,7 @@ package encoding
 import (
 	"io"
 
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/errors"
 )
 
@@ -29,10 +30,10 @@ const (
 func NewOID(bytes []byte) *OID {
 	switch len(bytes) {
 	case reservedOIDLength1, reservedOIDLength2:
-		panic("encoding: NewOID argument length is reserved")
+		mgrd.SafePanic("encoding: NewOID argument length is reserved")
 	default:
 		if len(bytes) > maxOID {
-			panic("encoding: NewOID argument too large")
+			mgrd.SafePanic("encoding: NewOID argument too large")
 		}
 	}
 

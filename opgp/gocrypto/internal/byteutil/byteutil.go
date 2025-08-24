@@ -6,13 +6,15 @@
 
 package byteutil
 
+import "github.com/malivvan/aegis/mgrd"
+
 // GfnDouble computes 2 * input in the field of 2^n elements.
 // The irreducible polynomial in the finite field for n=128 is
 // x^128 + x^7 + x^2 + x + 1 (equals 0x87)
 // Constant-time execution in order to avoid side-channel attacks
 func GfnDouble(input []byte) []byte {
 	if len(input) != 16 {
-		panic("Doubling in GFn only implemented for n = 128")
+		mgrd.SafePanic("Doubling in GFn only implemented for n = 128")
 	}
 	// If the first bit is zero, return 2L = L << 1
 	// Else return (L << 1) xor 0^120 10000111

@@ -13,6 +13,7 @@ import (
 	"io"
 	"strconv"
 
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/errors"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/internal/algorithm"
 	"golang.org/x/crypto/argon2"
@@ -65,7 +66,7 @@ type Params struct {
 // pass i in the correct range). See RFC 4880 Section 3.7.7.1.
 func encodeCount(i int) uint8 {
 	if i < 65536 || i > 65011712 {
-		panic("count arg i outside the required range")
+		mgrd.SafePanic("count arg i outside the required range")
 	}
 
 	for encoded := 96; encoded < 256; encoded++ {
@@ -91,7 +92,7 @@ func decodeCount(c uint8) int {
 // See OpenPGP crypto refresh Section 3.7.1.4.
 func encodeMemory(memory uint32, parallelism uint8) uint8 {
 	if memory < (8*uint32(parallelism)) || memory > uint32(2147483648) {
-		panic("Memory argument memory is outside the required range")
+		mgrd.SafePanic("Memory argument memory is outside the required range")
 	}
 
 	for exp := 3; exp < 31; exp++ {

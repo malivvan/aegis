@@ -5,6 +5,7 @@ import (
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"fmt"
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/errors"
 	"io"
 	"math/big"
@@ -78,7 +79,7 @@ func (c *genericCurve) GenerateECDSA(rand io.Reader) (x, y, secret *big.Int, err
 func (c *genericCurve) Encaps(rand io.Reader, point []byte) (ephemeral, sharedSecret []byte, err error) {
 	xP, yP := elliptic.Unmarshal(c.Curve, point)
 	if xP == nil {
-		panic("invalid point")
+		mgrd.SafePanic("invalid point")
 	}
 
 	d, x, y, err := elliptic.GenerateKey(c.Curve, rand)

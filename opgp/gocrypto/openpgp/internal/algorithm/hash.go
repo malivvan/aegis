@@ -8,6 +8,8 @@ import (
 	"crypto"
 	"fmt"
 	"hash"
+
+	"github.com/malivvan/aegis/mgrd"
 )
 
 // Hash is an official hash function algorithm. See RFC 4880, section 9.4.
@@ -78,7 +80,7 @@ var hashNames = map[uint8]string{
 func (h cryptoHash) String() string {
 	s, ok := hashNames[h.id]
 	if !ok {
-		panic(fmt.Sprintf("Unsupported hash function %d", h.id))
+		mgrd.SafePanic(fmt.Sprintf("Unsupported hash function %d", h.id))
 	}
 	return s
 }

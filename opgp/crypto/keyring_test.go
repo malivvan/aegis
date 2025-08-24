@@ -4,6 +4,7 @@ import (
 	"crypto/rsa"
 	"testing"
 
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/stretchr/testify/assert"
 
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/ecdh"
@@ -32,57 +33,57 @@ func initKeyRings() {
 
 	testSymmetricKey, err = RandomToken(32)
 	if err != nil {
-		panic("Expected no error while generating random token, got:" + err.Error())
+		mgrd.SafePanic("Expected no error while generating random token, got:" + err.Error())
 	}
 
 	privateKey, err := NewKeyFromArmored(readTestFile("keyring_privateKey", false))
 	if err != nil {
-		panic("Expected no error while unarmoring private key, got:" + err.Error())
+		mgrd.SafePanic("Expected no error while unarmoring private key, got:" + err.Error())
 	}
 
 	keyRingTestPrivate, err = NewKeyRing(privateKey)
 	if err == nil {
-		panic("Able to create a keyring with a locked key")
+		mgrd.SafePanic("Able to create a keyring with a locked key")
 	}
 
 	unlockedKey, err := privateKey.Unlock(testMailboxPassword)
 	if err != nil {
-		panic("Expected no error while unlocking private key, got:" + err.Error())
+		mgrd.SafePanic("Expected no error while unlocking private key, got:" + err.Error())
 	}
 
 	keyRingTestPrivate, err = NewKeyRing(unlockedKey)
 	if err != nil {
-		panic("Expected no error while building private keyring, got:" + err.Error())
+		mgrd.SafePanic("Expected no error while building private keyring, got:" + err.Error())
 	}
 
 	publicKey, err := NewKeyFromArmored(readTestFile("keyring_publicKey", false))
 	if err != nil {
-		panic("Expected no error while unarmoring public key, got:" + err.Error())
+		mgrd.SafePanic("Expected no error while unarmoring public key, got:" + err.Error())
 	}
 
 	keyRingTestPublic, err = NewKeyRing(publicKey)
 	if err != nil {
-		panic("Expected no error while building public keyring, got:" + err.Error())
+		mgrd.SafePanic("Expected no error while building public keyring, got:" + err.Error())
 	}
 
 	keyRingTestMultiple, err = NewKeyRing(nil)
 	if err != nil {
-		panic("Expected no error while building empty keyring, got:" + err.Error())
+		mgrd.SafePanic("Expected no error while building empty keyring, got:" + err.Error())
 	}
 
 	err = keyRingTestMultiple.AddKey(keyTestRSA)
 	if err != nil {
-		panic("Expected no error while adding RSA key to keyring, got:" + err.Error())
+		mgrd.SafePanic("Expected no error while adding RSA key to keyring, got:" + err.Error())
 	}
 
 	err = keyRingTestMultiple.AddKey(keyTestEC)
 	if err != nil {
-		panic("Expected no error while adding EC key to keyring, got:" + err.Error())
+		mgrd.SafePanic("Expected no error while adding EC key to keyring, got:" + err.Error())
 	}
 
 	err = keyRingTestMultiple.AddKey(unlockedKey)
 	if err != nil {
-		panic("Expected no error while adding unlocked key to keyring, got:" + err.Error())
+		mgrd.SafePanic("Expected no error while adding unlocked key to keyring, got:" + err.Error())
 	}
 }
 

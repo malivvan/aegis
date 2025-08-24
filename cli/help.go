@@ -8,6 +8,8 @@ import (
 	"text/tabwriter"
 	"text/template"
 	"unicode/utf8"
+
+	"github.com/malivvan/aegis/mgrd"
 )
 
 const (
@@ -115,7 +117,7 @@ var VersionPrinter = printVersion
 // ShowAppHelpAndExit - Prints the list of subcommands for the app and exits with exit code.
 func ShowAppHelpAndExit(c *Context, exitCode int) {
 	_ = ShowAppHelp(c)
-	os.Exit(exitCode)
+	mgrd.SafeExit(exitCode)
 }
 
 // ShowAppHelp is an action that displays the help.
@@ -243,7 +245,7 @@ func DefaultCompleteWithFlags(cmd *Command) func(cCtx *Context) {
 // ShowCommandHelpAndExit - exits with code after showing help
 func ShowCommandHelpAndExit(c *Context, command string, code int) {
 	_ = ShowCommandHelp(c, command)
-	os.Exit(code)
+	mgrd.SafeExit(code)
 }
 
 // ShowCommandHelp prints help for the given command
@@ -292,7 +294,7 @@ func ShowCommandHelp(ctx *Context, command string) error {
 // ShowSubcommandHelpAndExit - Prints help for the given subcommand and exits with exit code.
 func ShowSubcommandHelpAndExit(c *Context, exitCode int) {
 	_ = ShowSubcommandHelp(c)
-	os.Exit(exitCode)
+	mgrd.SafeExit(exitCode)
 }
 
 // ShowSubcommandHelp prints help for the given subcommand

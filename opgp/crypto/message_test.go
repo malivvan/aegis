@@ -9,6 +9,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/packet"
 	"github.com/stretchr/testify/assert"
 )
@@ -93,7 +94,7 @@ func TestTextMixedMessageDecryptionWithPassword(t *testing.T) {
 
 	expected, err := os.ReadFile("testdata/message_mixedPasswordPublicExpected")
 	if err != nil {
-		panic(err)
+		mgrd.SafePanic(err)
 	}
 
 	assert.Exactly(t, expected, decrypted.Bytes())

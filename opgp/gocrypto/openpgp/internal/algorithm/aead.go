@@ -4,6 +4,8 @@ package algorithm
 
 import (
 	"crypto/cipher"
+
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/gocrypto/eax"
 	"github.com/malivvan/aegis/opgp/gocrypto/ocb"
 )
@@ -59,7 +61,7 @@ func (mode AEADMode) New(block cipher.Block) (alg cipher.AEAD) {
 		alg, err = cipher.NewGCM(block)
 	}
 	if err != nil {
-		panic(err.Error())
+		mgrd.SafePanic(err.Error())
 	}
 	return alg
 }

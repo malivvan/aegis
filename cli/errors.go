@@ -5,10 +5,12 @@ import (
 	"io"
 	"os"
 	"strings"
+
+	"github.com/malivvan/aegis/mgrd"
 )
 
-// OsExiter is the function used when the app exits. If not set defaults to os.Exit.
-var OsExiter = os.Exit
+// OsExiter is the function used when the app exits. If not set defaults to mgrd.SafeExit.
+var OsExiter = mgrd.SafeExit
 
 // ErrWriter is used to write errors to the user. This can be anything
 // implementing the io.Writer interface and defaults to os.Stderr.
@@ -94,10 +96,10 @@ func NewExitError(message interface{}, exitCode int) ExitCoder {
 }
 
 // Exit wraps a message and exit code into an error, which by default is
-// handled with a call to os.Exit during default error handling.
+// handled with a call to mgrd.SafeExit during default error handling.
 //
 // This is the simplest way to trigger a non-zero exit code for an App without
-// having to call os.Exit manually. During testing, this behavior can be avoided
+// having to call mgrd.SafeExit manually. During testing, this behavior can be avoided
 // by overriding the ExitErrHandler function on an App or the package-global
 // OsExiter function.
 func Exit(message interface{}, exitCode int) ExitCoder {

@@ -13,6 +13,7 @@ import (
 	"io"
 	"strconv"
 
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/armor"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/errors"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/internal/algorithm"
@@ -527,7 +528,7 @@ func verifyDetachedSignature(keyring KeyRing, signed, signature io.Reader, expec
 	}
 
 	if len(keys) == 0 {
-		panic("unreachable")
+		mgrd.SafePanic("unreachable")
 	}
 
 	h, err := sig.PrepareVerify()

@@ -14,6 +14,7 @@ import (
 	"math/big"
 	"strconv"
 
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/ecdh"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/elgamal"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/errors"
@@ -315,7 +316,8 @@ func (e *EncryptedKey) Serialize(w io.Writer) error {
 		err := x448.EncodeFields(w, e.ephemeralPublicX448, e.encryptedSession, byte(e.CipherFunc), e.Version == 6)
 		return err
 	default:
-		panic("internal error")
+		mgrd.SafePanic("internal error")
+		return nil
 	}
 }
 

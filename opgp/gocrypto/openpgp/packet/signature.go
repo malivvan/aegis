@@ -16,6 +16,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/ecdsa"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/ed25519"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/ed448"
@@ -337,7 +338,7 @@ func (sig *Signature) parse(r io.Reader) (err error) {
 			return
 		}
 	default:
-		panic("unreachable")
+		mgrd.SafePanic("unreachable")
 	}
 	return
 }
@@ -1135,7 +1136,7 @@ func (sig *Signature) Serialize(w io.Writer) (err error) {
 	case PubKeyAlgoEd448:
 		sigLength = ed448.SignatureSize
 	default:
-		panic("impossible")
+		mgrd.SafePanic("impossible")
 	}
 
 	hashedSubpacketsLen := subpacketsLength(sig.outSubpackets, true)
@@ -1241,7 +1242,7 @@ func (sig *Signature) serializeBody(w io.Writer) (err error) {
 	case PubKeyAlgoEd448:
 		err = ed448.WriteSignature(w, sig.EdSig)
 	default:
-		panic("impossible")
+		mgrd.SafePanic("impossible")
 	}
 	return
 }

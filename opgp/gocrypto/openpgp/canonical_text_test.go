@@ -7,6 +7,8 @@ package openpgp
 import (
 	"bytes"
 	"testing"
+
+	"github.com/malivvan/aegis/mgrd"
 )
 
 type recordingHash struct {
@@ -22,15 +24,17 @@ func (r recordingHash) Sum(in []byte) []byte {
 }
 
 func (r recordingHash) Reset() {
-	panic("shouldn't be called")
+	mgrd.SafePanic("shouldn't be called")
 }
 
 func (r recordingHash) Size() int {
-	panic("shouldn't be called")
+	mgrd.SafePanic("shouldn't be called")
+	return 0
 }
 
 func (r recordingHash) BlockSize() int {
-	panic("shouldn't be called")
+	mgrd.SafePanic("shouldn't be called")
+	return 0
 }
 
 func testCanonicalText(t *testing.T, input, expected string) {

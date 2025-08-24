@@ -12,6 +12,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/armor"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/packet"
 	openpgp "github.com/malivvan/aegis/opgp/gocrypto/openpgp/v2"
@@ -47,16 +48,16 @@ func TestEndToEnd(t *testing.T) {
 	// Fetch foreign test vectors from JSON file
 	file, err := os.Open("testdata/test_vectors.json")
 	if err != nil {
-		panic(err)
+		mgrd.SafePanic(err)
 	}
 	raw, err := io.ReadAll(file)
 	if err != nil {
-		panic(err)
+		mgrd.SafePanic(err)
 	}
 	var foreignTestVectors []testVector
 	err = json.Unmarshal(raw, &foreignTestVectors)
 	if err != nil {
-		panic(err)
+		mgrd.SafePanic(err)
 	}
 
 	for i := 0; i < len(foreignTestVectors); i++ {

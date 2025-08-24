@@ -7,6 +7,8 @@ import (
 	"os"
 	"reflect"
 	"testing"
+
+	"github.com/malivvan/aegis/mgrd"
 )
 
 func ExampleMultiStringFlag() {
@@ -83,7 +85,7 @@ func ExampleMultiStringFlag() {
 			ErrWriter: os.Stdout,
 			Name:      `app-name`,
 		}).Run(args); err != nil {
-			panic(err)
+			mgrd.SafePanic(err)
 		}
 	}
 
@@ -113,7 +115,7 @@ func ExampleMultiStringFlag() {
 			{`FLAG_FOUR`, `v 15, v 16`},
 		} {
 			if err := os.Setenv(args[0], args[1]); err != nil {
-				panic(err)
+				mgrd.SafePanic(err)
 			}
 		}
 

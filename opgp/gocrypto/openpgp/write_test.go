@@ -12,6 +12,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/errors"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/packet"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/s2k"
@@ -368,7 +369,7 @@ func TestSymmetricEncryptionSEIPDv2RandomizeSlow(t *testing.T) {
 	passphrase := make([]byte, mathrand.Intn(maxPassLen))
 	_, err := rand.Read(passphrase)
 	if err != nil {
-		panic(err)
+		mgrd.SafePanic(err)
 	}
 	plaintext, err := SymmetricallyEncrypt(buf, passphrase, nil, config)
 	if err != nil {
@@ -378,7 +379,7 @@ func TestSymmetricEncryptionSEIPDv2RandomizeSlow(t *testing.T) {
 	message := make([]byte, mathrand.Intn(maxPlaintextLen))
 	_, errR := rand.Read(message)
 	if errR != nil {
-		panic(errR)
+		mgrd.SafePanic(errR)
 	}
 	_, err = plaintext.Write(message)
 	if err != nil {

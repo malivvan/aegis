@@ -12,6 +12,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/ecdsa"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/internal/ecc"
 )
@@ -207,7 +208,7 @@ func TestP256KeyID(t *testing.T) {
 func fromHex(hex string) *big.Int {
 	n, ok := new(big.Int).SetString(hex, 16)
 	if !ok {
-		panic("bad hex number: " + hex)
+		mgrd.SafePanic("bad hex number: " + hex)
 	}
 	return n
 }

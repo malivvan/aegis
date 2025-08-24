@@ -7,6 +7,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/ecdh"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/eddsa"
 	"github.com/malivvan/aegis/opgp/profile"
@@ -24,7 +25,7 @@ var testProfileNames []string
 func readTestFile(name string, trimNewlines bool) string {
 	data, err := os.ReadFile("testdata/" + name) //nolint
 	if err != nil {
-		panic(err)
+		mgrd.SafePanic(err)
 	}
 	if trimNewlines {
 		return strings.TrimRight(string(data), "\n")

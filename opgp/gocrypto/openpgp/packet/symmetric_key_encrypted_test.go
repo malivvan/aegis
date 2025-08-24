@@ -12,6 +12,7 @@ import (
 	mathrand "math/rand"
 	"testing"
 
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/errors"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/s2k"
 )
@@ -241,7 +242,7 @@ func TestSerializeSymmetricKeyEncryptedCiphersV4(t *testing.T) {
 					var buf bytes.Buffer
 					passphrase := make([]byte, mathrand.Intn(maxPassLen))
 					if _, err := rand.Read(passphrase); err != nil {
-						panic(err)
+						mgrd.SafePanic(err)
 					}
 					config := &Config{
 						DefaultCipher: cipher,

@@ -7,6 +7,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/constants"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/packet"
 	"github.com/malivvan/aegis/opgp/profile"
@@ -19,7 +20,7 @@ func init() {
 	var err error
 	testSessionKey, err = GenerateSessionKeyAlgo("aes256")
 	if err != nil {
-		panic("Expected no error while generating random session key with aes256, got:" + err.Error())
+		mgrd.SafePanic("Expected no error while generating random session key with aes256, got:" + err.Error())
 	}
 }
 

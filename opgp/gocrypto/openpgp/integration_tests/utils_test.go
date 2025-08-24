@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/armor"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/packet"
@@ -46,14 +47,14 @@ func generateFreshTestVectors(num int) (vectors []testVector, err error) {
 		// Generate keys
 		newEntity, errKG := openpgp.NewEntity(name, comment, email, config)
 		if errKG != nil {
-			panic(errKG)
+			mgrd.SafePanic(errKG)
 		}
 
 		// Encrypt private key of entity
 		rawPwd := []byte(password)
 		if newEntity.PrivateKey != nil && !newEntity.PrivateKey.Encrypted {
 			if err = newEntity.PrivateKey.Encrypt(rawPwd); err != nil {
-				panic(err)
+				mgrd.SafePanic(err)
 			}
 		}
 
@@ -61,7 +62,7 @@ func generateFreshTestVectors(num int) (vectors []testVector, err error) {
 		for _, sub := range newEntity.Subkeys {
 			if sub.PrivateKey != nil && !sub.PrivateKey.Encrypted {
 				if err = sub.PrivateKey.Encrypt(rawPwd); err != nil {
-					panic(err)
+					mgrd.SafePanic(err)
 				}
 			}
 		}
@@ -194,7 +195,7 @@ func randMessage() string {
 	maxMessageLength := 1 << 20
 	message := make([]byte, 1+mathrand.Intn(maxMessageLength-1))
 	if _, err := rand.Read(message); err != nil {
-		panic(err)
+		mgrd.SafePanic(err)
 	}
 	return string(message)
 }

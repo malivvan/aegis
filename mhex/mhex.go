@@ -1,6 +1,10 @@
 package mhex
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/malivvan/aegis/mgrd"
+)
 
 var stdEncoding = New("cbdefghijklnrtuv")
 
@@ -17,7 +21,7 @@ type Encoding []byte
 func New(alphabet string) Encoding {
 	encoding := []byte(alphabet)
 	if len(encoding) != 16 {
-		panic("modhex alphabet length must be 16")
+		mgrd.SafePanic("modhex alphabet length must be 16")
 	}
 	return encoding
 }

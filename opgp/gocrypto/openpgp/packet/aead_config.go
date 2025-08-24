@@ -2,7 +2,11 @@
 
 package packet
 
-import "math/bits"
+import (
+	"math/bits"
+
+	"github.com/malivvan/aegis/mgrd"
+)
 
 // CipherSuite contains a combination of Cipher and Mode
 type CipherSuite struct {
@@ -30,7 +34,7 @@ func (conf *AEADConfig) Mode() AEADMode {
 
 	mode := conf.DefaultMode
 	if mode != AEADModeEAX && mode != AEADModeOCB && mode != AEADModeGCM {
-		panic("AEAD mode unsupported")
+		mgrd.SafePanic("AEAD mode unsupported")
 	}
 	return mode
 }

@@ -30,7 +30,7 @@ func Purge() {
 }
 
 /*
-SafePanic wipes all it can before calling panic(v).
+SafePanic wipes all it can before calling mgrd.SafePanic(v).
 */
 func SafePanic(v interface{}) {
 	core.Panic(v)

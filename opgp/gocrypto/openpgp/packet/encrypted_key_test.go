@@ -16,6 +16,7 @@ import (
 	"crypto"
 	"crypto/rsa"
 
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/x25519"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/x448"
 )
@@ -23,7 +24,7 @@ import (
 func bigFromBase10(s string) *big.Int {
 	b, ok := new(big.Int).SetString(s, 10)
 	if !ok {
-		panic("bigFromBase10 failed")
+		mgrd.SafePanic("bigFromBase10 failed")
 	}
 	return b
 }
@@ -331,7 +332,7 @@ func TestSerializingEncryptedKey(t *testing.T) {
 	var buf bytes.Buffer
 	err = ek.Serialize(&buf)
 	if err != nil {
-		panic(err)
+		mgrd.SafePanic(err)
 	}
 
 	if bufHex := hex.EncodeToString(buf.Bytes()); bufHex != encryptedKeyHex {

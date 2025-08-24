@@ -10,6 +10,7 @@ import (
 	mathrand "math/rand"
 	"testing"
 
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/errors"
 )
 
@@ -329,7 +330,7 @@ func randomKey(length int) []byte {
 	key := make([]byte, length)
 	_, err := rand.Read(key)
 	if err != nil {
-		panic("can't read from rand")
+		mgrd.SafePanic("can't read from rand")
 	}
 	return key
 }
@@ -439,7 +440,7 @@ func SerializeAEADEncrypted(w io.Writer, key []byte, config *Config) (io.WriteCl
 	nonce := make([]byte, nonceLen)
 	_, err = rand.Read(nonce)
 	if err != nil {
-		panic("Could not sample random nonce")
+		mgrd.SafePanic("Could not sample random nonce")
 	}
 	_, err = writer.Write(nonce)
 	if err != nil {

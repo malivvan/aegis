@@ -20,6 +20,8 @@ import (
 	"io"
 	"math/big"
 	"sync"
+
+	"github.com/malivvan/aegis/mgrd"
 )
 
 // A BitCurve represents a Koblitz Curve with a=0.
@@ -64,7 +66,7 @@ func (bitCurve *BitCurve) IsOnCurve(x, y *big.Int) bool {
 // top of the file.
 func (bitCurve *BitCurve) affineFromJacobian(x, y, z *big.Int) (xOut, yOut *big.Int) {
 	if z.Cmp(big.NewInt(0)) == 0 {
-		panic("bitcurve: Can't convert to affine with Jacobian Z = 0")
+		mgrd.SafePanic("bitcurve: Can't convert to affine with Jacobian Z = 0")
 	}
 	// x = YZ^2 mod P
 	zinv := new(big.Int).ModInverse(z, bitCurve.P)

@@ -38,6 +38,7 @@ import (
 	"encoding/binary"
 	"sync"
 
+	"github.com/malivvan/aegis/mgrd"
 	"golang.org/x/crypto/blake2b"
 )
 
@@ -99,10 +100,10 @@ func IDKey(password, salt []byte, time, memory uint32, threads uint8, keyLen uin
 
 func deriveKey(mode int, password, salt, secret, data []byte, time, memory uint32, threads uint8, keyLen uint32) []byte {
 	if time < 1 {
-		panic("argon2: number of rounds too small")
+		mgrd.SafePanic("argon2: number of rounds too small")
 	}
 	if threads < 1 {
-		panic("argon2: parallelism degree too low")
+		mgrd.SafePanic("argon2: parallelism degree too low")
 	}
 	h0 := initHash(password, salt, secret, data, time, memory, uint32(threads), keyLen, mode)
 

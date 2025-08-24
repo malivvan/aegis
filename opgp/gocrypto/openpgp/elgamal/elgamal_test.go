@@ -9,6 +9,8 @@ import (
 	"crypto/rand"
 	"math/big"
 	"testing"
+
+	"github.com/malivvan/aegis/mgrd"
 )
 
 // This is the 1024-bit MODP group from RFC 5114, section 2.1:
@@ -19,7 +21,7 @@ const generatorHex = "A4D1CBD5C3FD34126765A442EFB99905F8104DD258AC507FD6406CFF14
 func fromHex(hex string) *big.Int {
 	n, ok := new(big.Int).SetString(hex, 16)
 	if !ok {
-		panic("failed to parse hex number")
+		mgrd.SafePanic("failed to parse hex number")
 	}
 	return n
 }

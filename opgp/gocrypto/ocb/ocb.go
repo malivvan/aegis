@@ -20,6 +20,7 @@ import (
 	"errors"
 	"math/bits"
 
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/gocrypto/internal/byteutil"
 )
 
@@ -107,7 +108,7 @@ func NewOCBWithNonceAndTagSize(
 
 func (o *ocb) Seal(dst, nonce, plaintext, adata []byte) []byte {
 	if len(nonce) > o.nonceSize {
-		panic("crypto/ocb: Incorrect nonce length given to OCB")
+		mgrd.SafePanic("crypto/ocb: Incorrect nonce length given to OCB")
 	}
 	sep := len(plaintext)
 	ret, out := byteutil.SliceForAppend(dst, sep+o.tagSize)
@@ -118,7 +119,7 @@ func (o *ocb) Seal(dst, nonce, plaintext, adata []byte) []byte {
 
 func (o *ocb) Open(dst, nonce, ciphertext, adata []byte) ([]byte, error) {
 	if len(nonce) > o.nonceSize {
-		panic("Nonce too long for this instance")
+		mgrd.SafePanic("Nonce too long for this instance")
 	}
 	if len(ciphertext) < o.tagSize {
 		return nil, ocbError("Ciphertext shorter than tag length")

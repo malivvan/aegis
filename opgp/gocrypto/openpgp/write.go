@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/armor"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/errors"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/internal/algorithm"
@@ -190,7 +191,7 @@ func intersectCipherSuites(a [][2]uint8, b [][2]uint8) (intersection [][2]uint8)
 func hashToHashId(h crypto.Hash) uint8 {
 	v, ok := algorithm.HashToHashId(h)
 	if !ok {
-		panic("tried to convert unknown hash")
+		mgrd.SafePanic("tried to convert unknown hash")
 	}
 	return v
 }

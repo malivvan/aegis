@@ -18,6 +18,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/ecdh"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/ecdsa"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/ed25519"
@@ -136,7 +137,7 @@ func NewECDSAPublicKey(creationTime time.Time, pub *ecdsa.PublicKey) *PublicKey 
 
 	curveInfo := ecc.FindByCurve(pub.GetCurve())
 	if curveInfo == nil {
-		panic("unknown elliptic curve")
+		mgrd.SafePanic("unknown elliptic curve")
 	}
 	pk.oid = curveInfo.Oid
 	pk.setFingerprintAndKeyId()
@@ -158,7 +159,7 @@ func NewECDHPublicKey(creationTime time.Time, pub *ecdh.PublicKey) *PublicKey {
 	curveInfo := ecc.FindByCurve(pub.GetCurve())
 
 	if curveInfo == nil {
-		panic("unknown elliptic curve")
+		mgrd.SafePanic("unknown elliptic curve")
 	}
 
 	pk.oid = curveInfo.Oid
@@ -297,7 +298,7 @@ func (pk *PublicKey) setFingerprintAndKeyId() {
 		fingerprint := sha256.New()
 		if err := pk.SerializeForHash(fingerprint); err != nil {
 			// Should not happen for a hash.
-			panic(err)
+			mgrd.SafePanic(err)
 		}
 		pk.Fingerprint = make([]byte, 32)
 		copy(pk.Fingerprint, fingerprint.Sum(nil))
@@ -306,7 +307,7 @@ func (pk *PublicKey) setFingerprintAndKeyId() {
 		fingerprint := sha1.New()
 		if err := pk.SerializeForHash(fingerprint); err != nil {
 			// Should not happen for a hash.
-			panic(err)
+			mgrd.SafePanic(err)
 		}
 		pk.Fingerprint = make([]byte, 20)
 		copy(pk.Fingerprint, fingerprint.Sum(nil))
@@ -682,7 +683,7 @@ func (pk *PublicKey) algorithmSpecificByteCount() uint32 {
 	case PubKeyAlgoEd448:
 		length += ed448.PublicKeySize
 	default:
-		panic("unknown public key algorithm")
+		mgrd.SafePanic("unknown public key algorithm")
 	}
 	return length
 }

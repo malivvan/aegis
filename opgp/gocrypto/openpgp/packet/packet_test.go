@@ -11,6 +11,7 @@ import (
 	"io"
 	"testing"
 
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/errors"
 )
 
@@ -39,7 +40,7 @@ func TestReadFull(t *testing.T) {
 func readerFromHex(s string) io.Reader {
 	data, err := hex.DecodeString(s)
 	if err != nil {
-		panic("readerFromHex: bad input")
+		mgrd.SafePanic("readerFromHex: bad input")
 	}
 	return bytes.NewBuffer(data)
 }

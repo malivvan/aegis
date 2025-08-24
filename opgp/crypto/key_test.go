@@ -7,6 +7,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/constants"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/armor"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/packet"
@@ -39,7 +40,7 @@ func initGenerateKeys() {
 		0,
 	)
 	if err != nil {
-		panic("Cannot generate RSA key:" + err.Error())
+		mgrd.SafePanic("Cannot generate RSA key:" + err.Error())
 	}
 	keyTestEC, err = generateKey(
 		keyTestName,
@@ -50,7 +51,7 @@ func initGenerateKeys() {
 		0,
 	)
 	if err != nil {
-		panic("Cannot generate EC key:" + err.Error())
+		mgrd.SafePanic("Cannot generate EC key:" + err.Error())
 	}
 }
 
@@ -58,22 +59,22 @@ func initArmoredKeys() {
 	var err error
 	lockedRSA, err := testPGP.LockKey(keyTestRSA, keyTestPassphrase)
 	if err != nil {
-		panic("Cannot lock RSA key:" + err.Error())
+		mgrd.SafePanic("Cannot lock RSA key:" + err.Error())
 	}
 
 	keyTestArmoredRSA, err = lockedRSA.Armor()
 	if err != nil {
-		panic("Cannot armor protected RSA key:" + err.Error())
+		mgrd.SafePanic("Cannot armor protected RSA key:" + err.Error())
 	}
 
 	lockedEC, err := testPGP.LockKey(keyTestEC, keyTestPassphrase)
 	if err != nil {
-		panic("Cannot lock EC key:" + err.Error())
+		mgrd.SafePanic("Cannot lock EC key:" + err.Error())
 	}
 
 	keyTestArmoredEC, err = lockedEC.Armor()
 	if err != nil {
-		panic("Cannot armor protected EC key:" + err.Error())
+		mgrd.SafePanic("Cannot armor protected EC key:" + err.Error())
 	}
 }
 

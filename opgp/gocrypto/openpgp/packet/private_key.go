@@ -19,6 +19,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/ecdh"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/ecdsa"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/ed25519"
@@ -167,7 +168,8 @@ func NewSignerPrivateKey(creationTime time.Time, signer interface{}) *PrivateKey
 	case ed448.PrivateKey:
 		pk.PublicKey = *NewEd448PublicKey(creationTime, &pubkey.PublicKey)
 	default:
-		panic("openpgp: unknown signer type in NewSignerPrivateKey")
+		mgrd.SafePanic("openpgp: unknown signer type in NewSignerPrivateKey")
+		mgrd.SafePanic("openpgp: unknown signer type in NewSignerPrivateKey")
 	}
 	pk.PrivateKey = signer
 	return pk
@@ -188,7 +190,7 @@ func NewDecrypterPrivateKey(creationTime time.Time, decrypter interface{}) *Priv
 	case *x448.PrivateKey:
 		pk.PublicKey = *NewX448PublicKey(creationTime, &priv.PublicKey)
 	default:
-		panic("openpgp: unknown decrypter type in NewDecrypterPrivateKey")
+		mgrd.SafePanic("openpgp: unknown decrypter type in NewDecrypterPrivateKey")
 	}
 	pk.PrivateKey = decrypter
 	return pk

@@ -11,6 +11,8 @@ import (
 	"crypto/cipher"
 	"crypto/subtle"
 	"errors"
+
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/gocrypto/internal/byteutil"
 )
 
@@ -65,7 +67,7 @@ func NewEAXWithNonceAndTagSize(
 
 func (e *eax) Seal(dst, nonce, plaintext, adata []byte) []byte {
 	if len(nonce) > e.nonceSize {
-		panic("crypto/eax: Nonce too long for this instance")
+		mgrd.SafePanic("crypto/eax: Nonce too long for this instance")
 	}
 	ret, out := byteutil.SliceForAppend(dst, len(plaintext)+e.tagSize)
 	omacNonce := e.omacT(0, nonce)
@@ -87,7 +89,7 @@ func (e *eax) Seal(dst, nonce, plaintext, adata []byte) []byte {
 
 func (e *eax) Open(dst, nonce, ciphertext, adata []byte) ([]byte, error) {
 	if len(nonce) > e.nonceSize {
-		panic("crypto/eax: Nonce too long for this instance")
+		mgrd.SafePanic("crypto/eax: Nonce too long for this instance")
 	}
 	if len(ciphertext) < e.tagSize {
 		return nil, eaxError("Ciphertext shorter than tag length")

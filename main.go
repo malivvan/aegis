@@ -12,7 +12,9 @@ import (
 )
 
 func main() {
-	mgrd.CatchInterrupt()
+	mgrd.CatchSignal(func(_ os.Signal) {
+		fmt.Println("\nExiting...")
+	}, os.Interrupt)
 	defer mgrd.Purge()
 
 	pgp := crypto.PGP()

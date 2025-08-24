@@ -17,6 +17,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/armor"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/errors"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/packet"
@@ -25,7 +26,7 @@ import (
 func readerFromHex(s string) io.Reader {
 	data, err := hex.DecodeString(s)
 	if err != nil {
-		panic("readerFromHex: bad input")
+		mgrd.SafePanic("readerFromHex: bad input")
 	}
 	return bytes.NewBuffer(data)
 }
@@ -799,14 +800,14 @@ func TestSymmetricAeadEaxOpenPGPJsMessage(t *testing.T) {
 	// Read packet
 	p, err := packet.Read(r)
 	if err != nil {
-		panic(err)
+		mgrd.SafePanic(err)
 	}
 
 	// Decrypt with key
 	edp := p.(*packet.AEADEncrypted)
 	rc, err := edp.Decrypt(packet.CipherFunction(0), key)
 	if err != nil {
-		panic(err)
+		mgrd.SafePanic(err)
 	}
 	// Read literal data packet
 	p, err = packet.Read(rc)

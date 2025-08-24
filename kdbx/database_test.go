@@ -6,6 +6,8 @@ import (
 	"log"
 	"reflect"
 	"testing"
+
+	"github.com/malivvan/aegis/mgrd"
 )
 
 func TestNewDatabase(t *testing.T) {
@@ -164,7 +166,7 @@ func ExampleNewDatabase_kdbxv3() {
 	// and encode it into the file
 	keepassEncoder := NewEncoder(buf)
 	if err := keepassEncoder.Encode(db); err != nil {
-		panic(err)
+		mgrd.SafePanic(err)
 	}
 
 	log.Printf("Wrote kdbx file to buffer")
@@ -186,7 +188,7 @@ func ExampleNewDatabase_kdbxv4() {
 	// and encode it into the file
 	keepassEncoder := NewEncoder(buf)
 	if err := keepassEncoder.Encode(db); err != nil {
-		panic(err)
+		mgrd.SafePanic(err)
 	}
 
 	log.Printf("Wrote kdbx file to buffer")

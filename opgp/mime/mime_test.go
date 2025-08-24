@@ -7,6 +7,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/crypto"
 	"github.com/stretchr/testify/assert"
 )
@@ -334,7 +335,7 @@ func readTestFile(name string, trimNewlines bool) string {
 func readTestFileBytes(name string) []byte {
 	data, err := os.ReadFile(filepath.Join("testdata/", name)) //nolint:gosec
 	if err != nil {
-		panic(err)
+		mgrd.SafePanic(err)
 	}
 	return data
 }

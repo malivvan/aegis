@@ -10,6 +10,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/malivvan/aegis/mgrd"
 	openpgp "github.com/malivvan/aegis/opgp/gocrypto/openpgp/v2"
 	"github.com/malivvan/aegis/opgp/profile"
 	"github.com/stretchr/testify/assert"
@@ -27,7 +28,7 @@ func generateTestKeyMaterial(name string, profile *profile.Custom) *testMaterial
 	handle := PGPWithProfile(profile)
 	testSessionKey, err := handle.GenerateSessionKey()
 	if err != nil {
-		panic("Cannot generate session key:" + err.Error())
+		mgrd.SafePanic("Cannot generate session key:" + err.Error())
 	}
 
 	keyTest, err := handle.KeyGeneration().
@@ -35,26 +36,26 @@ func generateTestKeyMaterial(name string, profile *profile.Custom) *testMaterial
 		New().
 		GenerateKey()
 	if err != nil {
-		panic("Cannot generate key:" + err.Error())
+		mgrd.SafePanic("Cannot generate key:" + err.Error())
 	}
 	keyTestPublic, err := keyTest.ToPublic()
 	if err != nil {
-		panic("Cannot extract public key:" + err.Error())
+		mgrd.SafePanic("Cannot extract public key:" + err.Error())
 	}
 	keyRingTestPrivate, err := NewKeyRing(keyTest)
 	if err != nil {
-		panic("Cannot create keyring:" + err.Error())
+		mgrd.SafePanic("Cannot create keyring:" + err.Error())
 	}
 	keyRingTestPublic, err := NewKeyRing(keyTestPublic)
 	if err != nil {
-		panic("Cannot create keyring:" + err.Error())
+		mgrd.SafePanic("Cannot create keyring:" + err.Error())
 	}
 	keyWrong, err := handle.KeyGeneration().
 		AddUserId("testWrong", "testWrong@test.test").
 		New().
 		GenerateKey()
 	if err != nil {
-		panic("Cannot generate key:" + err.Error())
+		mgrd.SafePanic("Cannot generate key:" + err.Error())
 	}
 	return &testMaterial{
 		profileName:        name,

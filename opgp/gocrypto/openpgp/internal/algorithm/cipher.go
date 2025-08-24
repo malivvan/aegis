@@ -9,6 +9,7 @@ import (
 	"crypto/cipher"
 	"crypto/des"
 
+	"github.com/malivvan/aegis/mgrd"
 	"golang.org/x/crypto/cast5"
 )
 
@@ -91,7 +92,7 @@ func (cipher CipherFunction) New(key []byte) (block cipher.Block) {
 		block, err = aes.NewCipher(key)
 	}
 	if err != nil {
-		panic(err.Error())
+		mgrd.SafePanic(err.Error())
 	}
 	return
 }

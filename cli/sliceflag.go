@@ -2,6 +2,8 @@ package cli
 
 import (
 	"flag"
+
+	"github.com/malivvan/aegis/mgrd"
 )
 
 type (
@@ -153,7 +155,7 @@ func (x *flagValueHook) Serialize() string {
 // applyFlagValueHook wraps calls apply then wraps flags to call a hook function on update and after initial apply.
 func applyFlagValueHook(set *flag.FlagSet, apply func(set *flag.FlagSet) error, hook func()) error {
 	if apply == nil || set == nil || hook == nil {
-		panic(`invalid input`)
+		mgrd.SafePanic(`invalid input`)
 	}
 	var tmp flag.FlagSet
 	if err := apply(&tmp); err != nil {

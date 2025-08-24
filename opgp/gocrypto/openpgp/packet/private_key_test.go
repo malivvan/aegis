@@ -20,6 +20,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/ecdsa"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/eddsa"
 	"github.com/malivvan/aegis/opgp/gocrypto/openpgp/elgamal"
@@ -454,11 +455,11 @@ func TestEncryptDecryptEdDSAPrivateKeyRandomizeFast(t *testing.T) {
 	password := make([]byte, 20)
 	_, err := rand.Read(password)
 	if err != nil {
-		panic(err)
+		mgrd.SafePanic(err)
 	}
 	primaryKey, err := eddsa.GenerateKey(rand.Reader, ecc.NewEd25519())
 	if err != nil {
-		panic(err)
+		mgrd.SafePanic(err)
 	}
 	privKey := *NewEdDSAPrivateKey(time.Now(), primaryKey)
 
