@@ -1,6 +1,6 @@
 # aegis [![Go Reference](https://pkg.go.dev/badge/github.com/malivvan/aegis)](https://pkg.go.dev/github.com/malivvan/aegis) [![Release](https://img.shields.io/github/v/release/malivvan/aegis.svg?sort=semver)](https://github.com/malivvan/aegis/releases/latest) ![test](https://github.com/malivvan/aegis/workflows/test/badge.svg) [![Go Report Card](https://goreportcard.com/badge/github.com/malivvan/aegis)](https://goreportcard.com/report/github.com/malivvan/aegis) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-a library and terminal application for secret management with hardware token support
+a terminal application for secret management with hardware token support
 
 ## Prerequisites
 
@@ -23,15 +23,10 @@ None
 
 ## Installation
 
-### application
 ```bash
 go install github.com/malivvan/aegis@latest
 ```
 
-### library
-```bash
-go get github.com/malivvan/aegis
-```
 
 ## Packages
 | package        | repository                                                                                                                 | license                                  |

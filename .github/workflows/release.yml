@@ -36,7 +36,7 @@ jobs:
         id: read_release
         shell: bash
         run: |
-          r=$(cat build/release.md)
+          r=$(cat build/RELEASE.md)
           r="${r//'%'/'%25'}"
           r="${r//$'\n'/'%0A'}"
           r="${r//$'\r'/'%0D'}"

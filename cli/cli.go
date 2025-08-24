@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/malivvan/aegis/cmd/cui"
+	"github.com/malivvan/aegis/cui"
 	"github.com/spf13/cobra"
 )
 

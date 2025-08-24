@@ -9,7 +9,7 @@ TEST_FORMAT ?= pkgname
 define build
 	@mkdir -p build
 	$(eval OUTPUT := $(if $(filter windows,$(1)),aegis-$(1)-$(2).exe,aegis-$(1)-$(2)))
-	$(eval URL := $(shell if [ -z "$(VERSION)" ]; then echo -n "" ; else echo -n https://github.com/malivvan/vv/releases/download/$(VERSION)/$(OUTPUT); fi))
+	$(eval URL := $(shell if [ -z "$(VERSION)" ]; then echo -n "" ; else echo -n https://github.com/malivvan/aegis/releases/download/$(VERSION)/$(OUTPUT); fi))
 	$(eval SERIAL := $(shell if [ -z "$(VERSION)" ]; then uuidgen --random ; else uuidgen --sha1 --namespace @url --name $(URL); fi))
 	@echo "$(OUTPUT)"
 	@CGO_ENABLED=0 GOOS=$(1) GOARCH=$(2) GOFLAGS=-tags="$(4)" cyclonedx-gomod \
@@ -22,14 +22,14 @@ define build
 	  -buildid=$(SERIAL) \
 	  -X main.version=$(VERSION)" \
 	  -o build/$(OUTPUT) ./cmd
-	@if [ ! -f build/release.md ]; then \
-	  echo "| filename | serial |" > build/release.md; \
-	  echo "|----------|--------|" >> build/release.md; \
+	@if [ ! -f build/RELEASE.md ]; then \
+	  echo "| filename | serial |" > build/RELEASE.md; \
+	  echo "|----------|--------|" >> build/RELEASE.md; \
 	fi
 	@if [ -z "$(VERSION)" ]; then \
-	  echo "| $(OUTPUT) | $(SERIAL) |" >> build/release.md; \
+	  echo "| $(OUTPUT) | $(SERIAL) |" >> build/RELEASE.md; \
 	else \
-	  echo "| [$(OUTPUT)]($(URL)) | [$(SERIAL)]($(URL).json) |" >> build/release.md; \
+	  echo "| [$(OUTPUT)]($(URL)) | [$(SERIAL)]($(URL).json) |" >> build/RELEASE.md; \
 	fi
 endef
 

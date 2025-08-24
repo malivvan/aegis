@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/malivvan/aegis/cmd/cli"
+	"github.com/malivvan/aegis/cli"
 )
 
 var version = ""
