@@ -1,0 +1,54 @@
+name: release
+on:
+  push:
+    tags:
+      - '*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: release
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        id: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: setup
+        id: setup
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: './go.mod'
+          cache-dependency-path: './go.sum'
+      - name: install
+        id: install
+        run: make install
+      - name: test
+        id: test
+        run: make test TEST_FORMAT=github-actions
+      - name: release
+        id: release
+        run: make release
+      - name: read RELEASE.md
+        id: read_release
+        shell: bash
+        run: |
+          r=$(cat build/release.md)
+          r="${r//'%'/'%25'}"
+          r="${r//$'\n'/'%0A'}"
+          r="${r//$'\r'/'%0D'}"
+          echo "RELEASE_BODY=$r" >> $GITHUB_OUTPUT
+      - name: upload binaries
+        id: upload
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: build/vv-*
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
+          body: |
+            ${{ steps.read_release.outputs.RELEASE_BODY }}

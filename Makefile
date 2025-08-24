@@ -1,0 +1,60 @@
+.PHONY: test build install clean
+
+ifeq ($(shell git status --porcelain),)
+	VERSION = $(shell git describe --tags --abbrev=0)
+endif
+
+TEST_FORMAT ?= pkgname
+
+define build
+	@mkdir -p build
+	$(eval OUTPUT := $(if $(filter windows,$(1)),aegis-$(1)-$(2).exe,aegis-$(1)-$(2)))
+	$(eval URL := $(shell if [ -z "$(VERSION)" ]; then echo -n "" ; else echo -n https://github.com/malivvan/vv/releases/download/$(VERSION)/$(OUTPUT); fi))
+	$(eval SERIAL := $(shell if [ -z "$(VERSION)" ]; then uuidgen --random ; else uuidgen --sha1 --namespace @url --name $(URL); fi))
+	@echo "$(OUTPUT)"
+	@CGO_ENABLED=0 GOOS=$(1) GOARCH=$(2) GOFLAGS=-tags="$(4)" cyclonedx-gomod \
+      app -json -packages -licenses \
+      -serial=$(SERIAL) \
+      -output build/$(OUTPUT).json -main ./cmd > /dev/null 2>&1
+	@CGO_ENABLED=0 GOOS=$(1) GOARCH=$(2) go \
+      build -trimpath -tags="$(4)" \
+	  -ldflags="$(3) \
+	  -buildid=$(SERIAL) \
+	  -X main.version=$(VERSION)" \
+	  -o build/$(OUTPUT) ./cmd
+	@if [ ! -f build/release.md ]; then \
+	  echo "| filename | serial |" > build/release.md; \
+	  echo "|----------|--------|" >> build/release.md; \
+	fi
+	@if [ -z "$(VERSION)" ]; then \
+	  echo "| $(OUTPUT) | $(SERIAL) |" >> build/release.md; \
+	else \
+	  echo "| [$(OUTPUT)]($(URL)) | [$(SERIAL)]($(URL).json) |" >> build/release.md; \
+	fi
+endef
+
+install:
+	@go install gotest.tools/gotestsum@latest
+	@go install github.com/CycloneDX/cyclonedx-gomod/cmd/cyclonedx-gomod@latest
+
+test:
+	@CGO_ENABLED=0 gotestsum --hide-summary skipped --format-hide-empty-pkg -- -short ./pcsc ./mhex ./kdbx
+
+build: clean
+	$(call build,$(shell go env GOOS),$(shell go env GOARCH),,)
+
+preview: clean
+	$(call build,$(shell go env GOOS),$(shell go env GOARCH),-s -w,)
+
+release: clean
+	$(call build,linux,386,-s -w,)
+	$(call build,linux,amd64,-s -w,)
+	$(call build,linux,arm,-s -w,)
+	$(call build,linux,arm64,-s -w,)
+	$(call build,windows,amd64,-s -w,)
+	$(call build,windows,386,-s -w,)
+	$(call build,windows,arm,-s -w,)
+	$(call build,windows,arm64,-s -w,)
+
+clean:
+	@rm -rf ./build
