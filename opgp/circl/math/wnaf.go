@@ -1,7 +1,11 @@
 // Package math provides some utility functions for big integers.
 package math
 
-import "math/big"
+import (
+	"math/big"
+
+	"github.com/malivvan/aegis/mgrd"
+)
 
 // SignedDigit obtains the signed-digit recoding of n and returns a list L of
 // digits such that n = sum( L[i]*2^(i*(w-1)) ), and each L[i] is an odd number
@@ -20,13 +24,13 @@ import "math/big"
 //     Security Analysis" by Bos et al. http://doi.org/10.1007/s13389-015-0097-y
 func SignedDigit(n *big.Int, w, l uint) []int32 {
 	if n.Sign() <= 0 || n.Bit(0) == 0 {
-		panic("n must be non-zero, odd, and positive")
+		mgrd.SafePanic("n must be non-zero, odd, and positive")
 	}
 	if w <= 1 || w >= 32 {
-		panic("Verify that 1 < w < 32")
+		mgrd.SafePanic("Verify that 1 < w < 32")
 	}
 	if uint(n.BitLen()) > l {
-		panic("n is too big to fit in l digits")
+		mgrd.SafePanic("n is too big to fit in l digits")
 	}
 	lenN := (l + (w - 1) - 1) / (w - 1) // ceil(l/(w-1))
 	L := make([]int32, lenN+1)
@@ -55,10 +59,10 @@ func SignedDigit(n *big.Int, w, l uint) []int32 {
 //     http://doi.org/10.1023/A:1008306223194
 func OmegaNAF(n *big.Int, w uint) (L []int32) {
 	if n.Sign() < 0 {
-		panic("n must be positive")
+		mgrd.SafePanic("n must be positive")
 	}
 	if w <= 1 || w >= 32 {
-		panic("Verify that 1 < w < 32")
+		mgrd.SafePanic("Verify that 1 < w < 32")
 	}
 
 	L = make([]int32, n.BitLen()+1)

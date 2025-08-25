@@ -17,6 +17,8 @@ package sha3
 
 import (
 	"io"
+
+	"github.com/malivvan/aegis/mgrd"
 )
 
 // ShakeHash defines the interface to hash functions that
@@ -63,7 +65,7 @@ func NewShake128() State {
 // D is the domain separation byte and must be between 0x01 and 0x7f inclusive.
 func NewTurboShake128(D byte) State {
 	if D == 0 || D > 0x7f {
-		panic("turboshake: D out of range")
+		mgrd.SafePanic("turboshake: D out of range")
 	}
 	return State{rate: rate128, dsbyte: D, turbo: true}
 }
@@ -81,7 +83,7 @@ func NewShake256() State {
 // D is the domain separation byte and must be between 0x01 and 0x7f inclusive.
 func NewTurboShake256(D byte) State {
 	if D == 0 || D > 0x7f {
-		panic("turboshake: D out of range")
+		mgrd.SafePanic("turboshake: D out of range")
 	}
 	return State{rate: rate256, dsbyte: D, turbo: true}
 }

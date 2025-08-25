@@ -46,6 +46,7 @@ import (
 	"io"
 	"strconv"
 
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/circl/sign"
 )
 
@@ -204,7 +205,7 @@ func NewKeyFromSeed(seed []byte) PrivateKey {
 
 func newKeyFromSeed(privateKey, seed []byte) {
 	if l := len(seed); l != SeedSize {
-		panic("ed25519: bad seed length: " + strconv.Itoa(l))
+		mgrd.SafePanic("ed25519: bad seed length: " + strconv.Itoa(l))
 	}
 	var P pointR1
 	k := sha512.Sum512(seed)
@@ -217,7 +218,7 @@ func newKeyFromSeed(privateKey, seed []byte) {
 
 func signAll(signature []byte, privateKey PrivateKey, message, ctx []byte, preHash bool) {
 	if l := len(privateKey); l != PrivateKeySize {
-		panic("ed25519: bad private key length: " + strconv.Itoa(l))
+		mgrd.SafePanic("ed25519: bad private key length: " + strconv.Itoa(l))
 	}
 
 	H := sha512.New()
@@ -252,7 +253,7 @@ func signAll(signature []byte, privateKey PrivateKey, message, ctx []byte, preHa
 	P.fixedMult(r[:paramB])
 	R := (&[paramB]byte{})[:]
 	if err := P.ToBytes(R); err != nil {
-		panic(err)
+		mgrd.SafePanic(err)
 	}
 
 	// 4.  Compute SHA512(dom2(F, C) || R || A || PH(M)).
@@ -295,7 +296,7 @@ func Sign(privateKey PrivateKey, message []byte) []byte {
 // ContextMaxSize=255. It can be empty.
 func SignPh(privateKey PrivateKey, message []byte, ctx string) []byte {
 	if len(ctx) > ContextMaxSize {
-		panic(fmt.Errorf("ed25519: bad context length: %v", len(ctx)))
+		mgrd.SafePanic(fmt.Errorf("ed25519: bad context length: %v", len(ctx)))
 	}
 
 	signature := make([]byte, SignatureSize)
@@ -311,7 +312,7 @@ func SignPh(privateKey PrivateKey, message []byte, ctx string) []byte {
 // ContextMaxSize=255 and cannot be empty.
 func SignWithCtx(privateKey PrivateKey, message []byte, ctx string) []byte {
 	if len(ctx) == 0 || len(ctx) > ContextMaxSize {
-		panic(fmt.Errorf("ed25519: bad context length: %v > %v", len(ctx), ContextMaxSize))
+		mgrd.SafePanic(fmt.Errorf("ed25519: bad context length: %v > %v", len(ctx), ContextMaxSize))
 	}
 
 	signature := make([]byte, SignatureSize)

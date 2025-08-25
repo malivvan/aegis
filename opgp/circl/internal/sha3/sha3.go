@@ -4,6 +4,8 @@
 
 package sha3
 
+import "github.com/malivvan/aegis/mgrd"
+
 // spongeDirection indicates the direction bytes are flowing through the sponge.
 type spongeDirection int
 
@@ -127,7 +129,7 @@ func (d *State) padAndPermute(dsbyte byte) {
 // if more data is written to the ShakeHash after writing
 func (d *State) Write(p []byte) (written int, err error) {
 	if d.state != spongeAbsorbing {
-		panic("sha3: write to sponge after read")
+		mgrd.SafePanic("sha3: write to sponge after read")
 	}
 	written = len(p)
 

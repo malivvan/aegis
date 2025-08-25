@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"encoding/asn1"
 
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/circl/sign"
 )
 
@@ -36,10 +37,10 @@ func (*scheme) Sign(
 ) []byte {
 	priv, ok := sk.(PrivateKey)
 	if !ok {
-		panic(sign.ErrTypeMismatch)
+		mgrd.SafePanic(sign.ErrTypeMismatch)
 	}
 	if opts != nil && opts.Context != "" {
-		panic(sign.ErrContextNotSupported)
+		mgrd.SafePanic(sign.ErrContextNotSupported)
 	}
 	return Sign(priv, message)
 }
@@ -51,11 +52,11 @@ func (*scheme) Verify(
 ) bool {
 	pub, ok := pk.(PublicKey)
 	if !ok {
-		panic(sign.ErrTypeMismatch)
+		mgrd.SafePanic(sign.ErrTypeMismatch)
 	}
 	if opts != nil {
 		if opts.Context != "" {
-			panic(sign.ErrContextNotSupported)
+			mgrd.SafePanic(sign.ErrContextNotSupported)
 		}
 	}
 	return Verify(pub, message, signature)

@@ -1,6 +1,9 @@
 package ed25519
 
-import fp "github.com/malivvan/aegis/opgp/circl/math/fp25519"
+import (
+	"github.com/malivvan/aegis/mgrd"
+	fp "github.com/malivvan/aegis/opgp/circl/math/fp25519"
+)
 
 type (
 	pointR1 struct{ x, y, z, ta, tb fp.Elt }
@@ -53,7 +56,7 @@ func (P *pointR1) ToBytes(k []byte) error {
 
 func (P *pointR1) FromBytes(k []byte) bool {
 	if len(k) != paramB {
-		panic("wrong size")
+		mgrd.SafePanic("wrong size")
 	}
 	signX := k[paramB-1] >> 7
 	copy(P.y[:], k[:fp.Size])

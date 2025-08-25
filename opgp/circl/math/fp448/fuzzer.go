@@ -15,6 +15,7 @@ import (
 	"fmt"
 	"math/big"
 
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/circl/internal/conv"
 )
 
@@ -69,7 +70,7 @@ func FuzzReduction(data []byte) int {
 		fmt.Printf("in:   %v\n", conv.BytesLe2BigInt(data[:2*Size]))
 		fmt.Printf("got:  %v\n", got)
 		fmt.Printf("want: %v\n", want)
-		panic("error found")
+		mgrd.SafePanic("error found")
 	}
 	return 1
 }

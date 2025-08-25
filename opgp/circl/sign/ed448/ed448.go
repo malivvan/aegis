@@ -33,6 +33,7 @@ import (
 	"io"
 	"strconv"
 
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/circl/ecc/goldilocks"
 	"github.com/malivvan/aegis/opgp/circl/internal/sha3"
 	"github.com/malivvan/aegis/opgp/circl/sign"
@@ -190,7 +191,7 @@ func NewKeyFromSeed(seed []byte) PrivateKey {
 
 func newKeyFromSeed(privateKey, seed []byte) {
 	if l := len(seed); l != SeedSize {
-		panic("ed448: bad seed length: " + strconv.Itoa(l))
+		mgrd.SafePanic("ed448: bad seed length: " + strconv.Itoa(l))
 	}
 
 	var h [hashSize]byte
@@ -206,7 +207,7 @@ func newKeyFromSeed(privateKey, seed []byte) {
 
 func signAll(signature []byte, privateKey PrivateKey, message, ctx []byte, preHash bool) {
 	if len(ctx) > ContextMaxSize {
-		panic(fmt.Errorf("ed448: bad context length: %v", len(ctx)))
+		mgrd.SafePanic(fmt.Errorf("ed448: bad context length: %v", len(ctx)))
 	}
 
 	H := sha3.NewShake256()
@@ -245,7 +246,7 @@ func signAll(signature []byte, privateKey PrivateKey, message, ctx []byte, preHa
 	r.FromBytes(rPM[:])
 	R := (&[paramB]byte{})[:]
 	if err := (goldilocks.Curve{}.ScalarBaseMult(r).ToBytes(R)); err != nil {
-		panic(err)
+		mgrd.SafePanic(err)
 	}
 	// 4.  Compute SHAKE256(dom4(F, C) || R || A || PH(M), 114)
 	var hRAM [hashSize]byte

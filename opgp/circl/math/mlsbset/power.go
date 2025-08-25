@@ -1,6 +1,10 @@
 package mlsbset
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/malivvan/aegis/mgrd"
+)
 
 // Power is a valid exponent produced by the MLSBSet encoding algorithm.
 type Power struct {
@@ -44,7 +48,7 @@ func (p *Power) bit(w, v, e uint) int32 {
 	if !(w < p.set.p.W &&
 		v < p.set.p.V &&
 		e < p.set.p.E) {
-		panic(fmt.Errorf("indexes outside (%v,%v,%v)", w, v, e))
+		mgrd.SafePanic(fmt.Errorf("indexes outside (%v,%v,%v)", w, v, e))
 	}
 	if w == 0 {
 		return p.s[p.set.p.E*v+e]

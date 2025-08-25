@@ -3,6 +3,7 @@ package goldilocks
 import (
 	"crypto/subtle"
 
+	"github.com/malivvan/aegis/mgrd"
 	mlsb "github.com/malivvan/aegis/opgp/circl/math/mlsbset"
 )
 
@@ -18,10 +19,10 @@ const (
 func (e twistCurve) ScalarBaseMult(k *Scalar) *twistPoint {
 	m, err := mlsb.New(fxT, fxV, fxW)
 	if err != nil {
-		panic(err)
+		mgrd.SafePanic(err)
 	}
 	if m.IsExtended() {
-		panic("not extended")
+		mgrd.SafePanic("not extended")
 	}
 
 	var isZero int
@@ -36,7 +37,7 @@ func (e twistCurve) ScalarBaseMult(k *Scalar) *twistPoint {
 	subtle.ConstantTimeCopy(isEven, k[:], minusK[:])
 	c, err := m.Encode(k[:])
 	if err != nil {
-		panic(err)
+		mgrd.SafePanic(err)
 	}
 
 	gP := c.Exp(groupMLSB{})

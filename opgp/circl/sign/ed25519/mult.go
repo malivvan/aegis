@@ -5,6 +5,7 @@ import (
 	"encoding/binary"
 	"math/bits"
 
+	"github.com/malivvan/aegis/mgrd"
 	"github.com/malivvan/aegis/opgp/circl/internal/conv"
 	"github.com/malivvan/aegis/opgp/circl/math"
 	fp "github.com/malivvan/aegis/opgp/circl/math/fp25519"
@@ -108,7 +109,7 @@ func div2subY(x []uint64, y int64, l int) {
 
 func (P *pointR1) fixedMult(scalar []byte) {
 	if len(scalar) != paramB {
-		panic("wrong scalar size")
+		mgrd.SafePanic("wrong scalar size")
 	}
 	const ee = (fxT + fxW*fxV - 1) / (fxW * fxV)
 	const dd = ee * fxV
